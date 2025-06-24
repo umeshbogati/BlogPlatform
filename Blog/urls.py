@@ -32,5 +32,6 @@ urlpatterns += [
     path('register/', views.register_view, name='register'),
     path('logout/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
+    path('post/<int:pk>/like/', views.toggle_like, name='toggle_like'),
 ]
 

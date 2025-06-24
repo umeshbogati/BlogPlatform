@@ -4,7 +4,9 @@ from .forms import PostForm, CommentForm
 
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import RegisterForm
+from .forms import RegisterForm 
+
+from django.contrib.auth.decorators import login_required
 
 def post_list(request):
     posts = Post.objects.all().order_by('-created_at')
@@ -77,3 +79,12 @@ def logout_view(request):
     logout(request)
     return redirect('post_list')
 
+
+@login_required
+def toggle_like(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+    return redirect('post_details', pk=pk)

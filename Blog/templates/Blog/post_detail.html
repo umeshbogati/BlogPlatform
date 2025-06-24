@@ -16,3 +16,18 @@
 </form>
 
 <a href="{% url 'post_list' %}">Back to List</a>
+
+{% if user.is_authenticated %}
+  <form method="post" action="{% url 'toggle_like' post.pk %}">{% csrf_token %}
+    <button type="submit">
+      {% if user in post.likes.all %}
+        ❤️ Unlike
+      {% else %}
+        🤍 Like
+      {% endif %}
+    </button>
+  </form>
+{% else %}
+  <p><a href="{% url 'login' %}">Login</a> to like this post.</p>
+{% endif %}
+<p>{{ post.likes.count }} Likes</p>
