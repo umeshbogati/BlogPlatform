@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, RegisterForm
 
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
@@ -110,3 +110,13 @@ def post_new(request):
     else:
         form = PostForm()
     return render(request, 'Blog/post_edit.html', {'form':form})
+
+def profile_view(request, username):
+    user = get_object_or_404(User, username=username)
+    posts = user.posts.all()
+    liked = user.liked.posts.all()
+    return render(request, 'Blog/profile.html', {'profile_user' : user,
+            'posts' : posts,
+            'liked' : liked
+            })
+    
