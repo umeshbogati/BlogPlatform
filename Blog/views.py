@@ -88,3 +88,11 @@ def toggle_like(request, pk):
     else:
         post.likes.add(request.user)
     return redirect('post_details', pk=pk)
+
+def post_list(request):
+    query = request.GET.get('q')
+    if query:
+        posts = Post.objects.filter(title__icontains=query)
+    else:
+        posts = Post.objects.all()
+    return render(request, 'blog/post_list.html', {'post':posts})
